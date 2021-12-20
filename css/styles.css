@@ -1,0 +1,79 @@
+body{
+    background-color: black;
+    font-family: Helvetica;
+}
+
+h1{
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    color: blanchedalmond;
+    
+}
+.content{
+    display: flex;
+    flex-direction: column;
+    padding: 60px;
+    justify-content: center;
+    align-items: center;
+    grid-row-gap: 5px;
+    height: 60vh;
+}
+
+
+button{
+    font-size: 20px;
+    padding: 15px;
+    border-radius: 25px;
+    width: 60px; 
+    box-shadow: 0 4px #999;  
+    transition-duration: 0.4s;
+    border: 2px solid grey;
+}
+
+button:hover {
+    background-color:#008CBA; 
+    color: white;
+}
+
+
+.row5 .zero{
+    width: 110px;
+    justify-content: center;
+}
+
+.content-values{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    overflow: auto;
+}
+.userentry, .result{
+    display: flex;
+    color: blanchedalmond;
+    font-size: 20px;
+    border-style:inset;
+    border-radius: 10px;
+    width: 220px;
+    justify-content: flex-end;
+    padding: 10px;
+    height: 20px;
+    text-overflow: clip;
+}
+
+button[class*='operator']{
+    background-color: goldenrod;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: goldenrod;
+    color: white;
+    text-align: center;
+  }
