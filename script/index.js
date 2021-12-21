@@ -1,17 +1,13 @@
 function add(a, b) {
-    if (isNaN(a)) { return b; }
     return (a + b);
 }
 function subtract(a, b) {
-    if (isNaN(a)) { return b; }
     return (a - b);
 }
 function multiply(a, b) {
-    if (isNaN(a)) { return b; }
     return a * b;
 }
 function divide(a, b) {
-    if (isNaN(a)) { return b; }
     if (b === 0) {
         return "u shud noe betta";
     }
@@ -29,61 +25,72 @@ function operate(num1, num2, operator) {
             return divide(+num1, +num2);
         case '*':
             return multiply(+num1, +num2);
-        default:
-            return num2;
     }
 }
 
 let results = document.querySelector(".result");
-let userentry = document.querySelector(".userentry");
+let backspace = document.querySelector(".operator-backspace");
 
 let scrapArr = [];
-let number1 = NaN;
-let number2 = NaN;
+let number1 = '';
+let number2 = '';
 let operator = '';
+let prevButtonisOperator = false;
+let finalVal = 0;
 
-const operatorsSymbol = "+-/*";
+
+const operatorsSymbol = "+-/*="; //operator symbols to check
 const buttons = document.querySelectorAll('button');
 
-document.querySelector(".operator-percent").disabled = true;
 document.querySelector(".operator-signed").disabled = true;
 
 
+//MAIN LISTENER FUNCTION
 buttons.forEach(button => button.addEventListener('click', (e) => {
     //CLEAR SCREEN
     if (e.target.outerText === 'AC') {
-        userentry.textContent = '';
         results.textContent = '';
-        number1 = NaN;
-        number2 = NaN;
+        number1 = '';
+        number2 = '';
         operator = '';
         scrapArr = []
+        prevButtonisOperator = false;
     }
-    
-    //PRINT RESULT
-    else if (e.target.outerText === '=') {
-        number2 = scrapArr.join('');
-        finalVal = operate(number1, number2, operator);
-        results.textContent = finalVal;
-    }
-    //TAKING INPUT and printing
     else {
-        //NOT IN USE KEYS
-        // if (e.target.outerText == '-+' || e.target.outerText == '%') {
-        //     console.log('not in use');
-        // }        
-            userentry.textContent += e.target.outerText;
-            if (operatorsSymbol.includes(e.target.outerText)) {
-                //pressed an operator
+        //operator entered +-/*=
+        if (operatorsSymbol.includes(e.target.outerText) && prevButtonisOperator == false) {
+            if (number1.length == 0) { //will only happen first time
+                number1 = scrapArr.join('');
+            } else { //will happen always except first time
                 number2 = scrapArr.join('');
-                scrapArr = [];
+            }
+
+            scrapArr = [];
+
+            if (number1.length !== 0 && number2.length !== 0) {
                 finalVal = operate(number1, number2, operator);
-                results.textContent = finalVal;
+                results.textContent = finalVal; //printing to UI
                 number1 = finalVal;
+                number2 = '';
+            }
+
+            //update the operator
+            if (e.target.outerText === "=") {
+                operator = '';
+            } else {
                 operator = e.target.outerText;
+                results.textContent += operator; //print operator to the UI
+                prevButtonisOperator = true;
             }
-            else {
-                scrapArr.push(e.target.outerText);
-            }
+
+            console.log("inside operator", finalVal, number1, number2, operator);
         }
+
+        else if (!operatorsSymbol.includes(e.target.outerText)) {
+            results.textContent += e.target.outerText;
+            scrapArr.push(e.target.outerText);
+            prevButtonisOperator = false;
+            console.log("outside operator", finalVal, number1, number2, operator);
+        }
+    }
 }));
