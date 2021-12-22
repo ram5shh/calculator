@@ -8,9 +8,9 @@ h1{
     top: 0;
     display: flex;
     justify-content: center;
-    color: blanchedalmond;
-    
+    color: blanchedalmond;  
 }
+
 .content{
     display: flex;
     flex-direction: column;
@@ -68,8 +68,15 @@ button[class*='operator']{
     background-color: goldenrod;
 }
 
+.backlog{
+    display: flex;
+    flex-direction: column;
+    color: blanchedalmond;
+}
+
+
 .footer {
-    position: fixed;
+    position: relative;
     left: 0;
     bottom: 0;
     width: 100%;
@@ -77,3 +84,4 @@ button[class*='operator']{
     color: white;
     text-align: center;
   }
+

@@ -38,17 +38,26 @@ let operator = '';
 let prevButtonisOperator = false;
 let finalVal = 0;
 
+let previousButtonPressed = '';
+
 
 const operatorsSymbol = "+-/*="; //operator symbols to check
 const buttons = document.querySelectorAll('button');
 
 document.querySelector(".operator-signed").disabled = true;
-
+backspace.disabled = true;
 
 //MAIN LISTENER FUNCTION
 buttons.forEach(button => button.addEventListener('click', (e) => {
+
+    
+    //clear previous entry
+    if(e.target.outerText === 'C'){
+
+    }
+
     //CLEAR SCREEN
-    if (e.target.outerText === 'AC') {
+    else if (e.target.outerText === 'AC') {
         results.textContent = '';
         number1 = '';
         number2 = '';
