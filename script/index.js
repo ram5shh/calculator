@@ -36,7 +36,7 @@ let number1 = '';
 let number2 = '';
 let operator = '';
 let prevButtonisOperator = false;
-let finalVal = 0;
+let finalVal = '';
 
 let previousButtonPressed = '';
 
@@ -44,27 +44,41 @@ let previousButtonPressed = '';
 const operatorsSymbol = "+-/*="; //operator symbols to check
 const buttons = document.querySelectorAll('button');
 
+
+//DISABLED BUTTONS
 document.querySelector(".operator-signed").disabled = true;
-backspace.disabled = true;
 
 //MAIN LISTENER FUNCTION
 buttons.forEach(button => button.addEventListener('click', (e) => {
-
-    
-    //clear previous entry
-    if(e.target.outerText === 'C'){
-
-    }
-
     //CLEAR SCREEN
-    else if (e.target.outerText === 'AC') {
+    if (e.target.outerText === 'AC') {
         results.textContent = '';
         number1 = '';
         number2 = '';
         operator = '';
         scrapArr = []
         prevButtonisOperator = false;
+        return;
     }
+
+    //clear previous entry
+    if (e.target.outerText === 'C' && scrapArr.length > 0 && prevButtonisOperator == false) {
+        scrapArr.pop();
+        results.textContent = scrapArr.join('');
+    }
+    else if (e.target.outerText === 'C' && scrapArr.length == 0 && prevButtonisOperator == false) {
+        return; //do nothing
+    }
+
+    else if (e.target.outerText === 'C' && prevButtonisOperator == true) {
+        operator = '';
+        results.textContent = results.textContent.substring(0, results.textContent.length - 1);
+        console.log("delete operator", `operator: ${results.textContent}`);
+        prevButtonisOperator = false;
+        return;
+    }
+
+
     else {
         //operator entered +-/*=
         if (operatorsSymbol.includes(e.target.outerText) && prevButtonisOperator == false) {
@@ -76,7 +90,7 @@ buttons.forEach(button => button.addEventListener('click', (e) => {
 
             scrapArr = [];
 
-            if (number1.length !== 0 && number2.length !== 0) {
+            if (number1.length !== 0 && number2.length !== 0 && operator !== '') {
                 finalVal = operate(number1, number2, operator);
                 results.textContent = finalVal; //printing to UI
                 number1 = finalVal;
@@ -86,20 +100,21 @@ buttons.forEach(button => button.addEventListener('click', (e) => {
             //update the operator
             if (e.target.outerText === "=") {
                 operator = '';
-            } else {
+            }
+            else {
                 operator = e.target.outerText;
                 results.textContent += operator; //print operator to the UI
                 prevButtonisOperator = true;
             }
 
-            console.log("inside operator", finalVal, number1, number2, operator);
+            // console.log("inside operator", finalVal, number1, number2, operator);
         }
 
         else if (!operatorsSymbol.includes(e.target.outerText)) {
-            results.textContent += e.target.outerText;
             scrapArr.push(e.target.outerText);
+            results.textContent = scrapArr.join('');
             prevButtonisOperator = false;
-            console.log("outside operator", finalVal, number1, number2, operator);
+            // console.log("outside operator", finalVal, number1, number2, operator);
         }
     }
 }));
