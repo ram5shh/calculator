@@ -30,6 +30,7 @@ function operate(num1, num2, operator) {
 
 let results = document.querySelector(".result");
 let backspace = document.querySelector(".operator-backspace");
+const buttons = document.querySelectorAll('button');
 
 let scrapArr = [];
 let number1 = '';
@@ -40,10 +41,7 @@ let finalVal = '';
 
 let previousButtonPressed = '';
 
-
 const operatorsSymbol = "+-/*="; //operator symbols to check
-const buttons = document.querySelectorAll('button');
-
 
 //DISABLED BUTTONS
 document.querySelector(".operator-signed").disabled = true;
@@ -69,7 +67,7 @@ buttons.forEach(button => button.addEventListener('click', (e) => {
     else if (e.target.outerText === 'C' && scrapArr.length == 0 && prevButtonisOperator == false) {
         return; //do nothing
     }
-
+    //clear previous operator
     else if (e.target.outerText === 'C' && prevButtonisOperator == true) {
         operator = '';
         results.textContent = results.textContent.substring(0, results.textContent.length - 1);
@@ -110,7 +108,7 @@ buttons.forEach(button => button.addEventListener('click', (e) => {
             // console.log("inside operator", finalVal, number1, number2, operator);
         }
 
-        else if (!operatorsSymbol.includes(e.target.outerText)) {
+        else if (!operatorsSymbol.includes(e.target.outerText)) { //user entered a number and not operator
             scrapArr.push(e.target.outerText);
             results.textContent = scrapArr.join('');
             prevButtonisOperator = false;
