@@ -9,7 +9,7 @@ function multiply(a, b) {
 }
 function divide(a, b) {
     if (b === 0) {
-        return "u shud noe betta";
+        return "Denominator cannot be 0.";
     }
     return +(a / b).toFixed(6);
 }
@@ -47,11 +47,14 @@ const operatorsSymbol = ['=', '+', '-', '/', '*', 'Enter'];
 const allAllowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', '/', '*', 'Backspace', 'Enter'];
 
 
-function acceptNumber(key) {
-    scrapArr.push(key);
-    results.textContent = scrapArr.join('');
+function clearScreen() {
+    results.textContent = '';
+    number1 = '';
+    number2 = '';
+    operator = '';
+    scrapArr = []
     prevButtonisOperator = false;
-    previousButtonPressed = ''; //reset the previous button since user pressed a number.
+    previousButtonPressed = '';
 }
 
 function clearEntry(Arrlength, prevButton) {
@@ -67,6 +70,13 @@ function clearEntry(Arrlength, prevButton) {
     else if (Arrlength == 0 && prevButton == false) {
         return; //do nothing
     }
+}
+
+function acceptNumber(key) {
+    scrapArr.push(key);
+    results.textContent = scrapArr.join('');
+    prevButtonisOperator = false;
+    previousButtonPressed = ''; //reset the previous button since user pressed a number.
 }
 
 function acceptOperator(key) {
@@ -96,16 +106,6 @@ function acceptOperator(key) {
         prevButtonisOperator = true;
         previousButtonPressed = ''; //reset the previous button since user pressed a true operator.
     }
-}
-
-function clearScreen() {
-    results.textContent = '';
-    number1 = '';
-    number2 = '';
-    operator = '';
-    scrapArr = []
-    prevButtonisOperator = false;
-    previousButtonPressed = '';
 }
 
 
@@ -156,7 +156,7 @@ buttons.forEach(button => button.addEventListener('click', (e) => {
             if (e.target.outerText == "." && scrapArr.includes(".")) { return; }
             //user shouldn't enter a number following =. They can either clear screen or continue calculation with operator
             if (previousButtonPressed == "=") { return; }
-            else { acceptNumber(e.target.outerText) };
+            else { acceptNumber(e.target.outerText);  };
         }
     }
 })); //END MOUSE CLICK LISTENER FUNCTION
