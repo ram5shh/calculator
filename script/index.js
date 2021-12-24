@@ -38,13 +38,21 @@ let number2 = '';
 let operator = '';
 let prevButtonisOperator = false;
 let finalVal = '';
-
 let previousButtonPressed = '';
 
 const operatorsSymbol = "+-/*="; //operator symbols to check
 
 //DISABLED BUTTONS
 document.querySelector(".operator-signed").disabled = true;
+
+//KEYPRESS SELECTOR
+window.addEventListener('keydown', (e) => {
+    if(e.key !== "Shift") console.log(e.key);
+});
+
+//if user pressed 0 to 9 .
+
+
 
 //MAIN LISTENER FUNCTION
 buttons.forEach(button => button.addEventListener('click', (e) => {
@@ -56,10 +64,11 @@ buttons.forEach(button => button.addEventListener('click', (e) => {
         operator = '';
         scrapArr = []
         prevButtonisOperator = false;
+        previousButtonPressed = ''; //currently logic built only for =
         return;
     }
 
-    //clear previous entry
+    //clear previous number
     if (e.target.outerText === 'C' && scrapArr.length > 0 && prevButtonisOperator == false) {
         scrapArr.pop();
         results.textContent = scrapArr.join('');
@@ -76,9 +85,8 @@ buttons.forEach(button => button.addEventListener('click', (e) => {
         return;
     }
 
-
     else {
-        //operator entered +-/*=
+        //OPERATOR ENTERED +-/*=
         if (operatorsSymbol.includes(e.target.outerText) && prevButtonisOperator == false) {
             if (number1.length == 0) { //will only happen first time
                 number1 = scrapArr.join('');
@@ -98,21 +106,30 @@ buttons.forEach(button => button.addEventListener('click', (e) => {
             //update the operator
             if (e.target.outerText === "=") {
                 operator = '';
+                previousButtonPressed = "="; //assign previous button as =
             }
             else {
                 operator = e.target.outerText;
                 results.textContent += operator; //print operator to the UI
                 prevButtonisOperator = true;
+                previousButtonPressed = ''; //reset the previous button since user pressed a true operator.
+            }
+        }
+        //user entered a number and not operator
+        else if (!operatorsSymbol.includes(e.target.outerText)) {
+            if (e.target.outerText == "." && scrapArr.includes(".")) {
+                return;
             }
 
-            // console.log("inside operator", finalVal, number1, number2, operator);
-        }
+            //user shouldn't enter a number following =. They can either clear screen or continue calculation by
+            //  entering an operator following =. 1+2 = 3 ... / 3 and so on.
+            if (previousButtonPressed == "=") { return; }
 
-        else if (!operatorsSymbol.includes(e.target.outerText)) { //user entered a number and not operator
+
             scrapArr.push(e.target.outerText);
             results.textContent = scrapArr.join('');
             prevButtonisOperator = false;
-            // console.log("outside operator", finalVal, number1, number2, operator);
+            previousButtonPressed = ''; //reset the previous button since user pressed a number.
         }
     }
 }));
